@@ -1,12 +1,13 @@
 // Global Audio object and state
 let currentSong = new Audio();
 let currentlyPlayingElement = null;
+let currentSongIndex = -1; // Tracks the index of the current song in the playlist
 
 // Function to convert seconds to minutes and seconds
 const secondsToMinutesSeconds = (seconds) => {
     if (isNaN(seconds) || seconds < 0) {
-        return "Invalid input";
-    }
+        return "00:00";
+    } 
 
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
@@ -53,6 +54,23 @@ const updateUI = (element, track = "") => {
     }
 };
 
+// Play a song by index
+const playSongByIndex = (songs, index) => {
+    if (index >= 0 && index < songs.length) {
+        const song = songs[index];
+        currentSong.src = `./songs/${song.url}`;
+        currentSong.play();
+        currentSongIndex = index;
+
+        // Update currently playing element
+        const songList = document.querySelector(".songList ul");
+        currentlyPlayingElement = songList.children[index];
+
+        // Update UI
+        updateUI(currentlyPlayingElement, song.url);
+    }
+};
+
 // Toggle song playback
 const togglePlayback = (song, element) => {
     if (currentlyPlayingElement === element) {
@@ -61,6 +79,7 @@ const togglePlayback = (song, element) => {
         currentSong.src = `./songs/${song.url}`;
         currentSong.play();
         currentlyPlayingElement = element;
+        currentSongIndex = Array.from(element.parentNode.children).indexOf(element); // Update index
     }
     updateUI(element, song.url);
 };
@@ -87,17 +106,13 @@ const main = async () => {
         songList.appendChild(li);
     });
 
-    // Load and set the first song in the playlist, set it to paused initially
+    // Load the first song by default but do not auto-play
     if (songs.length > 0) {
-        const firstSong = songs[0];
-        currentSong.src = `./songs/${firstSong.url}`;  // Set the first song as the source
-        currentSong.pause();  // Ensure the song is paused initially
-        updateUI(songList.querySelector("li"), firstSong.url);  // Update the playbar with the first song's details
-
-        // Set the first song's details to the playbar on page load
-        document.querySelector(".songinfo").textContent = firstSong.name + 
-            (firstSong.artist ? ` - ${firstSong.artist}` : ""); // Display artist only if available
-        document.querySelector(".songtime").textContent = "00:00 / 00:00";
+        currentSongIndex = 0;
+        currentlyPlayingElement = songList.children[0];
+        currentSong.src = `./songs/${songs[currentSongIndex].url}`;
+        updateUI(currentlyPlayingElement, songs[currentSongIndex].url); // Ensure play button shows correctly
+        document.querySelector("#play").src = "play.svg"; // Show play button initially
     }
 
     // Global play/pause button
@@ -113,26 +128,51 @@ const main = async () => {
         updateUI(currentlyPlayingElement, currentSong.src.split("/songs/")[1]);
     });
 
-    // Listen for timeupdate event to update the song duration
+    // Time update event
     currentSong.addEventListener("timeupdate", () => {
         document.querySelector(".songtime").innerHTML = `${secondsToMinutesSeconds(currentSong.currentTime)}
         /${secondsToMinutesSeconds(currentSong.duration)}`;
         document.querySelector(".circle").style.left = (currentSong.currentTime / currentSong.duration) * 100 + "%";
-    }); 
+    });
 
-    // Add an event listener to seekbar 
+    // Seekbar interaction
     document.querySelector(".seekbar").addEventListener("click", e => {
         let percent = (e.offsetX / e.target.getBoundingClientRect().width) * 100;
         document.querySelector(".circle").style.left = percent + "%";
         currentSong.currentTime = ((currentSong.duration) * percent) / 100;
     });
 
-    // Add an event listener for hamburger
+    // Previous Song
+    document.querySelector("#prevsong").addEventListener("click", () => {
+        if (currentSongIndex > 0) {
+            playSongByIndex(songs, currentSongIndex - 1);
+        }
+    });
+
+    // Next Song
+    document.querySelector("#nextsong").addEventListener("click", () => {
+        if (currentSongIndex < songs.length - 1) {
+            playSongByIndex(songs, currentSongIndex + 1);
+        }
+    });
+
+    // Volume range and keyboard sync
+    const volumeInput = document.querySelector(".range input");
+    volumeInput.addEventListener("input", (e) => {
+        const volume = e.target.value / 100;
+        currentSong.volume = volume;
+    });
+
+    // Update volume slider when volume changes from keyboard
+    currentSong.addEventListener("volumechange", () => {
+        volumeInput.value = currentSong.volume * 100;
+    });
+
+    // Hamburger menu
     document.querySelector(".hamburger").addEventListener("click", () => {
         document.querySelector(".left").style.left = "0";
     });
 
-    // Add an event listener for close
     document.querySelector(".close").addEventListener("click", () => {
         document.querySelector(".left").style.left = "-120%";
     });
