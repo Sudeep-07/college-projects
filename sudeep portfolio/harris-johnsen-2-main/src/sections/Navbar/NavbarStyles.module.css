@@ -1,0 +1,38 @@
+/* navbarStyles.module.css */
+
+/* Navbar Container */
+.container {
+  display: flex;
+  justify-content: center; /* Center the nav links */
+  align-items: center;
+  background-color: var(--background-color); /* Uses theme variable */
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+}
+
+/* Navigation Links */
+.navLinks {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+  padding: 0;
+}
+
+.navLinks li a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  transition: color 0.3s ease-in-out;
+}
+
+.navLinks li a:hover {
+  text-decoration: underline;
+  color: #93c5fd; /* Light blue on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navLinks {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

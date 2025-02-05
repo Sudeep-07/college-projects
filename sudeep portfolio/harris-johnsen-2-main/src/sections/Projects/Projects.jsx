@@ -14,7 +14,7 @@ function Projects() {
       <div className={styles.projectsContainer}>
         <ProjectCard
           src={beaton}
-          link="https://github.com/Sudeep-07/projects/tree/main/spotify"
+          link="https://beathop.freewebhostmost.com/"
           h3="beat-on"
           p="Music Streaming App"
         />
