@@ -394,6 +394,21 @@
         right: 25px;
     }
 
+
+    .play {
+        position: absolute;
+        top: 254px;
+        right: 30px;
+        opacity: 0;
+        transition: all 1s ease-out;
+    }
+    
+    .play:hover{
+        top: 275px;
+        opacity: 1;
+        transition: all 1s ease-out;
+    }
+
 }
 
 @media (max-width: 500px) {
@@ -423,6 +438,20 @@
 
     .left{ 
         width: 100vw;
+    }
+
+    .play {
+        position: absolute;
+        top: 285px;
+        right: 30px;
+        opacity: 0;
+        transition: all 1s ease-out;
+    }
+    
+    .play:hover{
+        top: 285px;
+        opacity: 1;
+        transition: all 1s ease-out;
     }
 
   
