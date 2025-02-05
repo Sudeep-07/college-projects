@@ -57,6 +57,10 @@
   position: relative;
 }
 
+.colorModeContainer img {
+  border-radius: 50%;
+}
+
 .colorMode {
   position: absolute;
   right: 0;
