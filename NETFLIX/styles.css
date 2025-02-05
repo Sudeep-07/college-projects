@@ -1,0 +1,17 @@
+body {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .hero-section {
+    height: 75vh;
+    background: url('images/background.jpg') no-repeat center center/cover;
+  }
+  
+  header select, header button {
+    font-size: 1rem;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  }
+  

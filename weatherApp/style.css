@@ -1,0 +1,41 @@
+/* General Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    background: url('./nature.jpg') no-repeat center center/cover; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+
+/* Weather Container */
+.container {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    width: 300px;
+}
+
+/* Search Box */
+input {
+    width: 200px;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    padding: 8px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.weather-box {
+    margin-top: 20px;
+}
